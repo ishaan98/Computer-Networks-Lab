@@ -104,7 +104,7 @@ Structures are used in socket programming to hold information about the address.
 
 The first structure is struct sockaddr that holds socket information.
 
-
+	(This is a generic structure)
 
 	struct sockaddr{
 		unsigned short  sa_family;    /* address family */
@@ -124,6 +124,21 @@ elements.
 		struct in_addr	     sin_addr;	  /* Internet Address */
 		unsigned char	     sin_zero[8]; /* Same size as struct sockaddr */
 	};
+	
+	----------------------------------
+	struct sockaddr_in {
+		short int	     sin_family;  /* Address family */
+		unsigned short int   sin_port;	  /* Port */
+		struct in_addr	     sin_addr;	  /* Internet Address */
+		unsigned char	     sin_zero[8]; /* Same size as struct sockaddr */
+	}Server;
+	
+	Server.sin_family = AF_INET;
+	Server.sin_port = 5000;
+	Server.addr.s_addr = 10.0.0.1; // or Server.addr.s_addr = INADDR_ANY; (when we dont know the ip. This code gets ip address and stores in s_addr)
+	
+	(So here ' Server ' contains the ip, and this has to be passed to the bind method)
+	----------------------------------
 
 
 
@@ -143,6 +158,11 @@ Here's the structure anyway:
 		unsigned long s_addr;
 	};
 
+	--------------------------
+	struct in_addr {
+		unsigned long s_addr;
+	}addr;
+	--------------------------
 
 
 Finally, I think it's better talk about struct hostent. In the Stream Client Example, you can
@@ -255,22 +275,27 @@ server source code (Sections 8 and 9)
 			    Those two are the most used, but don't think that there are just 
 	  		    those. There are more I just don't mention them. 
 		type     -> here you put the kind of socket you want (Stream or Datagram)
-			      If you want Stream Socket the type must be SOCK_STREAM
-			      If you want Datagram Socket the type must be SOCK_DGRAM
+			      If you want Stream Socket the type must be SOCK_STREAM ( TCP )
+			      If you want Datagram Socket the type must be SOCK_DGRAM ( UDP )
 		protocol -> you can just set protocol to 0
+			--> IPPROTO_TCP (if the type is TCP)
+			--> IPPROTO_UDP (if the type is UDP)
+			--> 0  (not used commonly. 0 works for both. OS decides the protocol on its own.)
 
 
 	socket() gives you a socket descriptor that you can use in later system calls or
 	it gives you -1 on error (this is usefull for error checking routines).
 
 
-  6.2. bind()
+  6.2. bind() --> used to associate the port and ip address to the socket.
   ===========
 
 	#include <sys/types.h>
 	#include <sys/socket.h>
 
 	int bind(int fd, struct sockaddr *my_addr,int addrlen);
+	
+	int b = bind(socketname fd, ip_address, ip_address_length)
 
 	
 	Let's see the arguments:
@@ -349,7 +374,7 @@ server source code (Sections 8 and 9)
 
 	Let's see the arguments:
 
-		fd  -> is the socket file descriptor returned by listen() call
+		fd  -> is the socket file descriptor returned by listen() call which is inturn the socket file descriptor returned by socket() call.
 		addr    -> is a pointer to struct sockaddr_in where you can determine which host 
 			   is calling you from which port
 		addrlen -> set it to sizeof(struct sockaddr_in) before its address is passed 

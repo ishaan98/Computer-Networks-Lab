@@ -4,7 +4,7 @@
 int fd;
 
 int main(){
-	if((fd=socket(AF_LOCAL, SOCK_STREAM, 0))==-1)
+	if((fd=socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP))==-1)
 		printf("Error");
 	else
 		printf("Established \nsocket: %d\n",fd);
