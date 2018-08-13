@@ -1,6 +1,3 @@
-
-// Client side code
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,9 +20,8 @@ int main(){
 	}
 	else
 		printf("Socket creation successful\n");
-		
 	server.sin_family = AF_INET;
-	server.sin_port = htons(7214);
+	server.sin_port = htons(7216);
 	server.sin_addr.s_addr = inet_addr("192.168.122.1");
 	if((connecter = connect(fd, (struct sockaddr *)&server, sizeof(struct sockaddr)))==-1){
 		perror("Connection error\n");
@@ -33,9 +29,21 @@ int main(){
 	}
 	else
 		printf("Connection successful\n");
-	char str[20];
-	int r = recv(fd, str, sizeof(str), 0);
-	printf("Name: %s\n",str);
+
+
+
+  int a[2];
+  printf("Enter 2 nos:\n");
+  for(int i=0; i<2; i++){
+    scanf("%d",&a[i]);
+  }
+  send(fd, &a, sizeof(a), 0);
+
+  int gcd;
+  int r = recv(fd, &gcd, sizeof(int), 0);
+
+  printf("The gcd: %d\n", gcd);
+
 	close(fd);
 
 }

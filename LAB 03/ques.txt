@@ -1,0 +1,9 @@
+WAP in TCP. Client has to enter two number and send to server. Server has to fing gcd and return result to Client.
+
+WAP in TCP. Client will send integer array to server. Server return min and max value to client. Client displays returned value
+
+WAP in TCP. Client will send indivisual element to the server from the array and server will send the even and odd number from the array
+and return the result to client.
+
+WAP in TCP. Client will send a structure of the employee to the server and server will calculate the salary and send the gross salary
+to the client.

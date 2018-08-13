@@ -1,5 +1,3 @@
-// WAP in TCP server accept server name and send to client. Then client display the name.
-
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -25,7 +23,7 @@ int main(){
 
 	// setting the data to server structure
 	server.sin_family = AF_INET;
-	server.sin_port = htons(7214);
+	server.sin_port = htons(7217);
 	server.sin_addr.s_addr = inet_addr("192.168.122.1");
 
 	// creating a binder
@@ -40,21 +38,30 @@ int main(){
 	// 5 signifies the number of connections. Acts as a limiter that limits the number of connections
 	listen(fd, 5);
 
-	// acceptance at client side
-	int size;
-	int newfd = accept(fd, (struct sockaddr *)&client, &size);
-	if(fd==-1){
-		perror("Accept error\n");
-		exit(0);
-	}
-	else
-		printf("Accept successfull\n");
-	char name[20];
-	printf("Enter name:\n");
-	//scanf(" %s",name);
-	gets(name);
-	send(newfd, name, strlen(name), 0);
-	close(newfd);
+  int size;
+  int newfd = accept(fd, (struct sockaddr *)&client, &size);
+  if(fd==-1){
+  	perror("Accept error\n");
+  	exit(0);
+  }
+  else
+  	printf("Accept successfull\n");
+
+  int n,len,s,r;
+  char res[10];
+
+  while(1){
+    r = recv(newfd, &n, sizeof(int), 0);
+
+    if(n%2 == 0)
+      strcpy(res,"even");
+    else
+      strcpy(res,"odd");
+
+    s = send(newfd, &res, sizeof(res), 0);
+  }
+
+  close(newfd);
 	close(fd);
 
 }
