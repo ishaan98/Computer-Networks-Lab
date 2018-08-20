@@ -1,0 +1,7 @@
+WAP in TCP to chat between client and server. It will terminate when any of one send exit.
+
+WAP in TCP One server communicates with multiple clients.
+
+WAP in TCP Client send range to server. Server send all armstrong no to client and client display it.
+
+WAP in TCP client accept a name. And send to server. Server return all vowels to client. And client display it.
