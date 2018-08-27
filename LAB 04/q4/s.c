@@ -15,7 +15,7 @@ int main()  {
     }
     struct sockaddr_in server, client;
     server.sin_family=AF_INET;
-    server.sin_port=htons(5027);
+    server.sin_port=htons(5040);
     server.sin_addr.s_addr=inet_addr("127.0.0.1");
     int b=bind(fd, (struct sockaddr*)&server, sizeof(struct sockaddr));
     if( b == -1 ) {
@@ -29,17 +29,20 @@ int main()  {
         perror("Accept Error\n");
         exit(0);
     }
+    
     char name[30], res;
-    int r=recv(newfd, &name, sizeof(name), 0);
-    int i, s, len=sizeof(name);
-    printf("%d",len);
+    int r=recv(newfd, &name, strlen(name), 0);
+    int i, s, len=strlen(name);
+    
     for(i=0; i<len; i++)	{
     	res=name[i];
-    	if(res=='a' || res=='e' || res=='i' || res=='o' || res=='u'){}
-    		//s=send(newfd, &res, sizeof(char), 0);
+    	if(res=='a' || res=='e' || res=='i' || res=='o' || res=='u'){
+    		s=send(newfd, &res, sizeof(char), 0);
+    		//printf("%c\t",res);	
+    	}
     }
-    char end='x';
-    s=send(fd, &end, sizeof(end), 0);
+    res='x';
+    s=send(newfd, &res, sizeof(char), 0);
     close(newfd);
     close(fd);
 }
